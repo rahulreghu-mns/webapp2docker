@@ -4,6 +4,9 @@
 name: ACR and webapp
 
 on:
+  push:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
@@ -31,6 +34,14 @@ jobs:
       - name: Step 6 - build with maven
         run: mvn -B package --file pom.xml
 
+      - name: Step 7 List the current directory
+        run: ls -a
+        
+      - name: Step-8 List the target directory
+        run: |
+          cd target
+          ls -a 
+
       - name: step-7 ACR login
         uses: azure/docker-login@v1
         with:
@@ -40,8 +51,8 @@ jobs:
 
       - name: Step 8 - Docker build and push to ACR
         run: |
-          docker build . -t rahultestwebapp04acr.azurecr.io/webapp2:latest
-          docker push rahultestwebapp04acr.azurecr.io/webapp2:latest  
+          docker build . -t rahultestwebapp04acr.azurecr.io/simplewebapp:latest
+          docker push rahultestwebapp04acr.azurecr.io/simplewebapp:latest  
           
       - name: list docker image
         run: docker images
